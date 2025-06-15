@@ -15,7 +15,7 @@ body {
 }
 
 /* Sidebar */
-.sidebar {
+/* .sidebar {
     width: 220px;
     background-color: #1f2937;
     color: #fff;
@@ -33,6 +33,43 @@ body {
 .sidebar li {
     margin: 15px 0;
     cursor: pointer;
+} */
+.sidebar {
+    width: 200px;
+    background-color: #1f2937;
+    color: white;
+    padding: 20px;
+    height: 100vh;
+}
+
+.sidebar h2 {
+    margin-bottom: 20px;
+    font-size: 20px;
+    text-align: center;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin: 15px 0;
+}
+
+.sidebar ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    display: block;
+    padding: 8px 10px;
+    border-radius: 6px;
+    transition: background 0.2s;
+}
+
+.sidebar ul li a:hover,
+.sidebar ul li.active a {
+    background-color: #374151;
 }
 
 /* Product Area */
