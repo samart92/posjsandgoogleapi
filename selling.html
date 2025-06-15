@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>POS Dashboard with Images</title>
+    <link rel="stylesheet" href="style.css" />
+
+    <style>
+      .dashboard-info {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      /* General 2-column layout */
+      .dashboard-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+      }
+
+      .dashboard-cell {
+        flex: 1 1 calc(50% - 10px);
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      /* Card styling */
+      .card,
+      .chart-card {
+        background: white;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 0 6px rgba(0, 0, 0, 0.05);
+      }
+
+      .card h4 {
+        color: #4b5563;
+      }
+
+      .card p {
+        font-size: 1.2em;
+        font-weight: bold;
+        color: #111827;
+      }
+
+      .chart-card h3 {
+        margin-bottom: 10px;
+        color: #1f2937;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="dashboard">
+      <!-- Sidebar Menu -->
+      <aside class="sidebar">
+        <h2>POS Menu</h2>
+        <ul>
+          <li>🏠 Dashboard</li>
+          <li>📦 Products</li>
+          <li>🛒 Sales</li>
+          <li>📊 Reports</li>
+          <li>⚙️ Settings</li>
+          <li>🚪 Logout</li>
+        </ul>
+      </aside>
+
+      <!-- Product Area -->
+      <main class="product-area">
+        <!-- Top Navbar -->
+        <header class="topbar">
+          <div class="topbar-left">
+            <h1>POS Dashboard</h1>
+          </div>
+          <div class="topbar-right">
+            <span class="user-name">👤 John Doe</span>
+            <img
+              src="https://i.pravatar.cc/40?img=3"
+              alt="User Avatar"
+              class="user-avatar"
+            />
+          </div>
+        </header>
+        <!-- ................ -->
+        <h2>Product List</h2>
+        <div class="product-grid" id="product-grid">
+          <!-- Products will load here -->
+        </div>
+      </main>
+
+      <!-- Cart Area -->
+      <aside class="cart-area">
+        <h2>Selling Cart</h2>
+        <ul id="cart-list">
+          <!-- Selling items go here -->
+        </ul>
+        <div class="cart-footer">
+          <strong>Total: $<span id="total">0.00</span></strong>
+          <button onclick="checkout()">🧾 Checkout</button>
+        </div>
+      </aside>
+    </div>
+
+    <script>
+      const products = [
+        {
+          id: 1,
+          name: "Coffee",
+          price: 2.5,
+          image: "https://source.unsplash.com/160x100/?coffee",
+        },
+        {
+          id: 2,
+          name: "Tea",
+          price: 2.0,
+          image: "https://source.unsplash.com/160x100/?tea",
+        },
+        {
+          id: 3,
+          name: "Milk",
+          price: 1.8,
+          image: "https://source.unsplash.com/160x100/?milk",
+        },
+        {
+          id: 4,
+          name: "Cake",
+          price: 3.0,
+          image: "https://source.unsplash.com/160x100/?cake",
+        },
+        {
+          id: 5,
+          name: "Sandwich",
+          price: 3.5,
+          image: "https://source.unsplash.com/160x100/?sandwich",
+        },
+        {
+          id: 6,
+          name: "Juice",
+          price: 2.8,
+          image: "https://source.unsplash.com/160x100/?juice",
+        },
+      ];
+
+      const productGrid = document.getElementById("product-grid");
+      const cartList = document.getElementById("cart-list");
+      const totalDisplay = document.getElementById("total");
+
+      let cart = [];
+
+      function renderProducts() {
+        productGrid.innerHTML = "";
+        products.forEach((product) => {
+          const card = document.createElement("div");
+          card.className = "product-card";
+          card.innerHTML = `
+        <img src="${product.image}" alt="${product.name}">
+        <h4>${product.name}</h4>
+        <p>$${product.price.toFixed(2)}</p>
+        <button onclick="addToCart(${product.id})">Add</button>
+      `;
+          productGrid.appendChild(card);
+        });
+      }
+
+      function addToCart(id) {
+        const product = products.find((p) => p.id === id);
+        const existing = cart.find((item) => item.id === id);
+
+        if (existing) {
+          existing.qty++;
+        } else {
+          cart.push({ ...product, qty: 1 });
+        }
+
+        updateCart();
+      }
+
+      function updateCart() {
+        cartList.innerHTML = "";
+        let total = 0;
+        cart.forEach((item) => {
+          total += item.qty * item.price;
+          const li = document.createElement("li");
+          li.innerHTML = `${item.name} x${item.qty} <span>$${(
+            item.qty * item.price
+          ).toFixed(2)}</span>`;
+          cartList.appendChild(li);
+        });
+        totalDisplay.textContent = total.toFixed(2);
+      }
+
+      function checkout() {
+        alert("Checkout successful!");
+        cart = [];
+        updateCart();
+      }
+
+      renderProducts();
+    </script>
+  </body>
+</html>

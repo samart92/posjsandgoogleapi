@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>POS Settings</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="dashboard">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <h2>POS Menu</h2>
+        <ul>
+          <li>🏠 Dashboard</li>
+          <li>📦 Products</li>
+          <li>🛒 Sales</li>
+          <li>📊 Reports</li>
+          <li class="active">⚙️ Settings</li>
+          <li>🚪 Logout</li>
+        </ul>
+      </aside>
+
+      <!-- Main Settings Section -->
+      <main class="product-area">
+        <!-- Top Navbar -->
+        <header class="topbar">
+          <div class="topbar-left">
+            <h1>POS Dashboard</h1>
+          </div>
+          <div class="topbar-right">
+            <span class="user-name">👤 John Doe</span>
+            <img
+              src="https://i.pravatar.cc/40?img=3"
+              alt="User Avatar"
+              class="user-avatar"
+            />
+          </div>
+        </header>
+
+        <section class="dashboard-info">
+          <h2>Settings</h2>
+
+          <div class="dashboard-row">
+            <!-- Column 1 -->
+            <div class="dashboard-cell">
+              <!-- Profile Info -->
+              <div class="card">
+                <h4>Profile Information</h4>
+                <label>Name</label>
+                <input type="text" placeholder="Your Name" />
+                <label>Email</label>
+                <input type="email" placeholder="email@example.com" />
+                <button class="btn-save">Save Profile</button>
+              </div>
+
+              <!-- Change Password -->
+              <div class="card">
+                <h4>Change Password</h4>
+                <label>Current Password</label>
+                <input type="password" />
+                <label>New Password</label>
+                <input type="password" />
+                <label>Confirm Password</label>
+                <input type="password" />
+                <button class="btn-save">Change Password</button>
+              </div>
+            </div>
+
+            <!-- Column 2 -->
+            <div class="dashboard-cell">
+              <!-- Business Info -->
+              <div class="card">
+                <h4>Business Information</h4>
+                <label>Business Name</label>
+                <input type="text" placeholder="My POS Shop" />
+                <label>Address</label>
+                <textarea placeholder="123 Street, City, Country"></textarea>
+                <label>Phone</label>
+                <input type="text" placeholder="+855 12 345 678" />
+                <button class="btn-save">Save Business Info</button>
+              </div>
+
+              <!-- Preferences -->
+              <div class="card">
+                <h4>Preferences</h4>
+                <label>Language</label>
+                <select>
+                  <option>English</option>
+                  <option>Khmer</option>
+                </select>
+                <label>Currency</label>
+                <select>
+                  <option>USD ($)</option>
+                  <option>KHR (៛)</option>
+                </select>
+                <button class="btn-save">Save Preferences</button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>

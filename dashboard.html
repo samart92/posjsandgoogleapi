@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>POS Dashboard</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    <div class="dashboard">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <h2>POS Menu</h2>
+        <ul>
+          <li>🏠 Dashboard</li>
+          <li>📦 Products</li>
+          <li>🛒 Sales</li>
+          <li>📊 Reports</li>
+          <li>⚙️ Settings</li>
+          <li onclick="logout()">🚪 Logout</li>
+        </ul>
+      </aside>
+
+      <main class="product-area">
+        <!-- Top Navbar -->
+        <header class="topbar">
+          <div class="topbar-left">
+            <h1>POS Dashboard</h1>
+          </div>
+          <div class="topbar-right">
+            <span class="user-name">👤 John Doe</span>
+            <img
+              src="https://i.pravatar.cc/40?img=3"
+              alt="User Avatar"
+              class="user-avatar"
+            />
+          </div>
+        </header>
+
+        <section class="dashboard-info">
+          <h2>POS Dashboard Overview</h2>
+
+          <!-- Row 1: Summary Cards -->
+          <div class="dashboard-row">
+            <div class="dashboard-cell">
+              <div class="card">
+                <h4>Total Sales</h4>
+                <p>$5,200.00</p>
+              </div>
+            </div>
+            <div class="dashboard-cell">
+              <div class="card">
+                <h4>Total Products</h4>
+                <p>120</p>
+              </div>
+            </div>
+            <div class="dashboard-cell">
+              <div class="card">
+                <h4>Total Orders</h4>
+                <p>98</p>
+              </div>
+            </div>
+            <div class="dashboard-cell">
+              <div class="card">
+                <h4>Customers</h4>
+                <p>65</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Row 2: Charts -->
+          <div class="dashboard-row">
+            <div class="dashboard-cell">
+              <div class="chart-card">
+                <h3>Sales Bar Chart</h3>
+                <canvas id="salesChart" height="200"></canvas>
+              </div>
+            </div>
+            <div class="dashboard-cell">
+              <div class="chart-card">
+                <h3>Product Category Distribution</h3>
+                <canvas id="categoryChart" height="100"></canvas>
+              </div>
+            </div>
+            <div class="dashboard-cell">
+              <div class="chart-card">
+                <h3>Weekly Sales Trend</h3>
+                <canvas id="trendChart" height="200"></canvas>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="script.js"></script>
+
+    <script>
+      // Sales Bar Chart
+      new Chart(document.getElementById("salesChart"), {
+        type: "bar",
+        data: {
+          labels: ["Mon", "Tue", "Wed", "Thu", "Fri"],
+          datasets: [
+            {
+              label: "Sales",
+              data: [200, 450, 300, 550, 700],
+              backgroundColor: "#3b82f6",
+              borderRadius: 8,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          plugins: { legend: { display: false } },
+          scales: { y: { beginAtZero: true } },
+        },
+      });
+
+      // Category Pie Chart
+      new Chart(document.getElementById("categoryChart"), {
+        type: "pie",
+        data: {
+          labels: ["Beverages", "Snacks", "Bakery", "Dairy"],
+          datasets: [
+            {
+              data: [40, 25, 20, 15],
+              backgroundColor: ["#3b82f6", "#10b981", "#f59e0b", "#ef4444"],
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          plugins: { legend: { position: "bottom" } },
+        },
+      });
+
+      // Weekly Sales Line Chart
+      new Chart(document.getElementById("trendChart"), {
+        type: "line",
+        data: {
+          labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+          datasets: [
+            {
+              label: "Sales ($)",
+              data: [100, 200, 300, 250, 400, 550, 600],
+              borderColor: "#3b82f6",
+              backgroundColor: "rgba(59, 130, 246, 0.1)",
+              fill: true,
+              tension: 0.3,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          plugins: { legend: { display: false } },
+          scales: { y: { beginAtZero: true } },
+        },
+      });
+    </script>
+
+    <script>
+      // Show current username
+      const username = localStorage.getItem("user");
+      if (!username) {
+        window.location.href = "userlogin.html";
+      } else {
+        document.getElementById("userName").textContent = username;
+      }
+
+      // Logout function
+      function logout() {
+        if (confirm("Are you sure you want to logout?")) {
+          localStorage.removeItem("user");
+          window.location.href = "userlogin.html";
+        }
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>POS Product CRUD</title>
+    <link rel="stylesheet" href="style.css" />
+    <!-- <script
+      src="https://kit.fontawesome.com/a076d05399.js"
+      crossorigin="anonymous"
+    ></script> -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+      integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+  </head>
+  <body>
+    <div class="dashboard">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <h2>POS Menu</h2>
+        <ul>
+          <li>🏠 Dashboard</li>
+          <li class="active">📦 Products</li>
+          <li>🛒 Sales</li>
+          <li>📊 Reports</li>
+          <li>⚙️ Settings</li>
+          <li>🚪 Logout</li>
+        </ul>
+      </aside>
+
+      <!-- Main Section -->
+      <main class="product-area">
+        <header class="topbar">
+          <div class="topbar-left">
+            <h1>Products</h1>
+          </div>
+          <div class="topbar-right">
+            <span class="user-name">👤 John Doe</span>
+            <img
+              src="https://i.pravatar.cc/40"
+              alt="User"
+              class="user-avatar"
+            />
+          </div>
+        </header>
+
+        <section class="dashboard-info">
+          <div class="dashboard-row">
+            <!-- Table -->
+            <div class="dashboard-cell full-width">
+              <div class="card">
+                <div class="flex-between">
+                  <h4>Product List</h4>
+                  <button onclick="openModal()" class="btn-save">
+                    + Add Product
+                  </button>
+                </div>
+                <table class="product-table" id="productTable">
+                  <thead>
+                    <tr>
+                      <th>Photo</th>
+                      <th>Name</th>
+                      <th>Price</th>
+                      <th>Qty</th>
+                      <th>Category</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- Add Product Modal -->
+    <div id="modal" class="modal">
+      <div class="modal-content">
+        <span class="close-btn" onclick="closeModal()">&times;</span>
+        <h3>Add Product</h3>
+        <form id="addForm">
+          <label>Name</label>
+          <input type="text" id="name" required />
+          <label>Price</label>
+          <input type="number" id="price" required />
+          <label>Quantity</label>
+          <input type="number" id="qty" required />
+          <label>Category</label>
+          <select id="category">
+            <option>Beverage</option>
+            <option>Food</option>
+            <option>Dessert</option>
+          </select>
+          <label>Image URL</label>
+          <input type="text" id="image" placeholder="https://..." />
+          <button type="submit" class="btn-save">Add Product</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Edit Product Modal -->
+    <div id="editModal" class="modal">
+      <div class="modal-content">
+        <span class="close-btn" onclick="closeEditModal()">&times;</span>
+        <h3>Edit Product</h3>
+        <form id="editForm">
+          <input type="hidden" id="editIndex" />
+          <label>Name</label>
+          <input type="text" id="editName" required />
+          <label>Price</label>
+          <input type="number" id="editPrice" required />
+          <label>Quantity</label>
+          <input type="number" id="editQty" required />
+          <label>Category</label>
+          <select id="editCategory">
+            <option>Beverage</option>
+            <option>Food</option>
+            <option>Dessert</option>
+          </select>
+          <label>Image URL</label>
+          <input type="text" id="editImage" required />
+          <button type="submit" class="btn-save">Update Product</button>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      const modal = document.getElementById("modal");
+      const editModal = document.getElementById("editModal");
+      const addForm = document.getElementById("addForm");
+      const editForm = document.getElementById("editForm");
+      const table = document.querySelector("#productTable tbody");
+
+      let products = [];
+
+      function openModal() {
+        modal.style.display = "block";
+      }
+
+      function closeModal() {
+        modal.style.display = "none";
+        addForm.reset();
+      }
+
+      function openEditModal(index) {
+        const p = products[index];
+        document.getElementById("editIndex").value = index;
+        document.getElementById("editName").value = p.name;
+        document.getElementById("editPrice").value = p.price;
+        document.getElementById("editQty").value = p.qty;
+        document.getElementById("editCategory").value = p.category;
+        document.getElementById("editImage").value = p.image;
+        editModal.style.display = "block";
+      }
+
+      function closeEditModal() {
+        editModal.style.display = "none";
+        editForm.reset();
+      }
+
+      // Add Product
+      addForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const newProduct = {
+          name: document.getElementById("name").value,
+          price: document.getElementById("price").value,
+          qty: document.getElementById("qty").value,
+          category: document.getElementById("category").value,
+          image:
+            document.getElementById("image").value ||
+            "https://via.placeholder.com/40",
+        };
+        products.push(newProduct);
+        renderTable();
+        closeModal();
+      });
+
+      // Edit Product
+      editForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const index = document.getElementById("editIndex").value;
+        products[index] = {
+          name: document.getElementById("editName").value,
+          price: document.getElementById("editPrice").value,
+          qty: document.getElementById("editQty").value,
+          category: document.getElementById("editCategory").value,
+          image:
+            document.getElementById("editImage").value ||
+            "https://via.placeholder.com/40",
+        };
+        renderTable();
+        closeEditModal();
+      });
+
+      // Delete
+      function deleteProduct(index) {
+        if (confirm("Are you sure you want to delete this product?")) {
+          products.splice(index, 1);
+          renderTable();
+        }
+      }
+
+      // Render
+      function renderTable() {
+        table.innerHTML = "";
+        products.forEach((p, i) => {
+          table.innerHTML += `
+      <tr>
+        <td><img src="${p.image}" class="product-img" /></td>
+        <td>${p.name}</td>
+        <td>$${p.price}</td>
+        <td>${p.qty}</td>
+        <td>${p.category}</td>
+        <td>
+          <button class="btn-action" onclick="openEditModal(${i})"><i class="fas fa-edit"></i></button>
+          <button class="btn-action danger" onclick="deleteProduct(${i})"><i class="fas fa-trash-alt"></i></button>
+        </td>
+      </tr>
+    `;
+        });
+      }
+    </script>
+  </body>
+</html>
