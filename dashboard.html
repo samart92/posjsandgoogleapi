@@ -35,14 +35,7 @@
           <div class="topbar-left">
             <h1>POS Dashboard</h1>
           </div>
-          <div class="topbar-right">
-            <span class="user-name">👤 John Doe</span>
-            <img
-              src="https://i.pravatar.cc/40?img=3"
-              alt="User Avatar"
-              class="user-avatar"
-            />
-          </div>
+          <div class="topbar-right" id="user"></div>
         </header>
 
         <section class="dashboard-info">
@@ -176,6 +169,16 @@
       // } else {
       //   document.getElementById("userName").textContent = username;
       // }
+
+      let user = document.getElementById("user");
+      user.innerHTML = `<span class="user-name">👤 ${localStorage.getItem(
+        "user"
+      )}</span>
+            <img
+              src="https://i.pravatar.cc/40?img=3"
+              alt="User Avatar"
+              class="user-avatar"
+            />`;
     </script>
   </body>
 </html>

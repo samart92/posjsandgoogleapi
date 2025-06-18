@@ -1,4 +1,12 @@
  
+      // let user =document.getElementById('user')
+      //   user.innerHTML=`<span class="user-name">👤 ${localStorage.getItem("user")}</span>
+      //       <img
+      //         src="https://i.pravatar.cc/40?img=3"
+      //         alt="User Avatar"
+      //         class="user-avatar"
+      //       />`;
+
       let menu = document.getElementById("menuList");
       menu.innerHTML =`<li>
             <a href="dashboard.html">🏠 Dashboard</a>
