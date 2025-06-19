@@ -186,13 +186,117 @@
     <script src="menusctive.js"></script>
 
     <script>
+      //   const modal = document.getElementById("modal");
+      //   const editModal = document.getElementById("editModal");
+      //   const addForm = document.getElementById("addForm");
+      //   const editForm = document.getElementById("editForm");
+      //   const table = document.querySelector("#productTable tbody");
+
+      //   let products = [];
+
+      //   function openModal() {
+      //     modal.style.display = "block";
+      //   }
+
+      //   function closeModal() {
+      //     modal.style.display = "none";
+      //     addForm.reset();
+      //   }
+
+      //   function openEditModal(index) {
+      //     const p = products[index];
+      //     document.getElementById("editIndex").value = index;
+      //     document.getElementById("editName").value = p.name;
+      //     document.getElementById("editPrice").value = p.price;
+      //     document.getElementById("editQty").value = p.qty;
+      //     document.getElementById("editCategory").value = p.category;
+      //     document.getElementById("editImage").value = p.image;
+      //     editModal.style.display = "block";
+      //   }
+
+      //   function closeEditModal() {
+      //     editModal.style.display = "none";
+      //     editForm.reset();
+      //   }
+
+      //   // Add Product
+      //   addForm.addEventListener("submit", (e) => {
+      //     e.preventDefault();
+      //     const newProduct = {
+      //       name: document.getElementById("name").value,
+      //       price: document.getElementById("price").value,
+      //       qty: document.getElementById("qty").value,
+      //       category: document.getElementById("category").value,
+      //       image:
+      //         document.getElementById("image").value ||
+      //         "https://via.placeholder.com/40",
+      //     };
+      //     products.push(newProduct);
+      //     renderTable();
+      //     closeModal();
+      //   });
+
+      //   // Edit Product
+      //   editForm.addEventListener("submit", (e) => {
+      //     e.preventDefault();
+      //     const index = document.getElementById("editIndex").value;
+      //     products[index] = {
+      //       name: document.getElementById("editName").value,
+      //       price: document.getElementById("editPrice").value,
+      //       qty: document.getElementById("editQty").value,
+      //       category: document.getElementById("editCategory").value,
+      //       image:
+      //         document.getElementById("editImage").value ||
+      //         "https://via.placeholder.com/40",
+      //     };
+      //     renderTable();
+      //     closeEditModal();
+      //   });
+
+      //   // Delete
+      //   function deleteProduct(index) {
+      //     if (confirm("Are you sure you want to delete this product?")) {
+      //       products.splice(index, 1);
+      //       renderTable();
+      //     }
+      //   }
+
+      //   // Render
+      //   function renderTable() {
+      //     table.innerHTML = "";
+      //     products.forEach((p, i) => {
+      //       table.innerHTML += `
+      //   <tr>
+      //     <td><img src="${p.image}" class="product-img" /></td>
+      //     <td>${p.name}</td>
+      //     <td>$${p.price}</td>
+      //     <td>${p.qty}</td>
+      //     <td>${p.category}</td>
+      //     <td>
+      //       <button class="btn-action" onclick="openEditModal(${i})"><i class="fas fa-edit"></i></button>
+      //       <button class="btn-action danger" onclick="deleteProduct(${i})"><i class="fas fa-trash-alt"></i></button>
+      //     </td>
+      //   </tr>
+      // `;
+      //     });
+      //   }
+    </script>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+    <script src="firebase/config.js"></script>
+
+    <script>
       const modal = document.getElementById("modal");
       const editModal = document.getElementById("editModal");
       const addForm = document.getElementById("addForm");
       const editForm = document.getElementById("editForm");
       const table = document.querySelector("#productTable tbody");
 
-      let products = [];
+      renderTable();
+      // let products = [];
 
       function openModal() {
         modal.style.display = "block";
@@ -222,6 +326,7 @@
       // Add Product
       addForm.addEventListener("submit", (e) => {
         e.preventDefault();
+        const productId = db.ref().child("products").push().key;
         const newProduct = {
           name: document.getElementById("name").value,
           price: document.getElementById("price").value,
@@ -231,9 +336,17 @@
             document.getElementById("image").value ||
             "https://via.placeholder.com/40",
         };
-        products.push(newProduct);
-        renderTable();
-        closeModal();
+        db.ref("products/" + productId)
+          .set(newProduct)
+          .then(() => {
+            // renderTable();
+            loadProducts();
+            closeModal();
+          });
+
+        //products.push(newProduct);
+        // renderTable();
+        // closeModal();
       });
 
       // Edit Product
@@ -254,39 +367,69 @@
       });
 
       // Delete
-      function deleteProduct(index) {
+      function deleteProduct(id) {
         if (confirm("Are you sure you want to delete this product?")) {
-          products.splice(index, 1);
+          //products.splice(index, 1);
+          db.ref("products/" + id).remove();
           renderTable();
         }
       }
 
       // Render
       function renderTable() {
-        table.innerHTML = "";
-        products.forEach((p, i) => {
-          table.innerHTML += `
-      <tr>
-        <td><img src="${p.image}" class="product-img" /></td>
-        <td>${p.name}</td>
-        <td>$${p.price}</td>
-        <td>${p.qty}</td>
-        <td>${p.category}</td>
-        <td>
-          <button class="btn-action" onclick="openEditModal(${i})"><i class="fas fa-edit"></i></button>
-          <button class="btn-action danger" onclick="deleteProduct(${i})"><i class="fas fa-trash-alt"></i></button>
-        </td>
-      </tr>
-    `;
+        db.ref("products").on("value", (snapshot) => {
+          const data = snapshot.val();
+          let html = "";
+          for (let id in data) {
+            const p = data[id];
+            html += `
+                <tr>
+              <td>
+                <img src="${p.image}" class="product-img" />
+              </td>
+              <td>${p.name}</td>
+              <td>$${p.price}</td>
+              <td>${p.qty}</td>
+              <td>${p.category}</td>
+              <td>
+                <button class="btn-action" onclick="openEditModal('${id}')">
+                  <i class="fas fa-edit"></i>
+                </button>
+                <button
+                  class="btn-action danger"
+                  onclick="deleteProduct('${id}')"
+                >
+                  <i class="fas fa-trash-alt"></i>
+                </button>
+              </td>
+            </tr>
+          `;
+          }
+          table.innerHTML = html;
         });
       }
-    </script>
 
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-    <!-- <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script> -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
-    <script src="firebase/config.js"></script>
+      // ///////////////////////////
+      // const name = document.getElementById("name").value;
+      // const price = document.getElementById("price").value;
+      // const quantity = document.getElementById("quantity").value;
+      // const category = document.getElementById("category").value;
+      // const imageFile = document.getElementById("image").files[0];
+      // const productId = db.ref().child("products").push().key;
+
+      // const storageRef = storage.ref("product_images/" + imageFile.name);
+      // storageRef.put(imageFile).then((snapshot) => {
+      //   snapshot.ref.getDownloadURL().then((downloadURL) => {
+      //     db.ref("products/" + productId).set({
+      //       name,
+      //       price,
+      //       quantity,
+      //       category,
+      //       image: downloadURL,
+      //     });
+      //   });
+      // });
+    </script>
 
     <script>
       /////////////////show nane withe login
