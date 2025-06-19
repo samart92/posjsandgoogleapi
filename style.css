@@ -222,7 +222,7 @@ body {
   min-height: 60px;
 }
 
-<<<<<<< HEAD
+/* <<<<<<< HEAD */
 .btn-save {
   margin-top: 15px;
   padding: 10px 20px;
@@ -238,7 +238,7 @@ body {
 
 .btn-save:hover {
   background-color: #2563eb;
-=======
+/* ======= */
 .btn-add {
     margin-top: 15px;
     padding: 10px 20px;
@@ -254,7 +254,7 @@ body {
 
 .btn-add:hover {
     background-color: #2563eb;
->>>>>>> 5a48d5e4f5082856b2f0b09b7cdcccdcf18d91c5
+/* >>>>>>> 5a48d5e4f5082856b2f0b09b7cdcccdcf18d91c5 */
 }
 
 .topbar {
