@@ -99,44 +99,110 @@
     <script src="menusctive.js"></script>
 
     <script>
-      const products = [
-        {
-          id: 1,
-          name: "Coffee",
-          price: 2.5,
-          image: "https://source.unsplash.com/160x100/?coffee",
-        },
-        {
-          id: 2,
-          name: "Tea",
-          price: 2.0,
-          image: "https://source.unsplash.com/160x100/?tea",
-        },
-        {
-          id: 3,
-          name: "Milk",
-          price: 1.8,
-          image: "https://source.unsplash.com/160x100/?milk",
-        },
-        {
-          id: 4,
-          name: "Cake",
-          price: 3.0,
-          image: "https://source.unsplash.com/160x100/?cake",
-        },
-        {
-          id: 5,
-          name: "Sandwich",
-          price: 3.5,
-          image: "https://source.unsplash.com/160x100/?sandwich",
-        },
-        {
-          id: 6,
-          name: "Juice",
-          price: 2.8,
-          image: "https://source.unsplash.com/160x100/?juice",
-        },
-      ];
+      // const products = [
+      //   {
+      //     id: 1,
+      //     name: "Coffee",
+      //     price: 2.5,
+      //     image: "https://source.unsplash.com/160x100/?coffee",
+      //   },
+      //   {
+      //     id: 2,
+      //     name: "Tea",
+      //     price: 2.0,
+      //     image: "https://source.unsplash.com/160x100/?tea",
+      //   },
+      //   {
+      //     id: 3,
+      //     name: "Milk",
+      //     price: 1.8,
+      //     image: "https://source.unsplash.com/160x100/?milk",
+      //   },
+      //   {
+      //     id: 4,
+      //     name: "Cake",
+      //     price: 3.0,
+      //     image: "https://source.unsplash.com/160x100/?cake",
+      //   },
+      //   {
+      //     id: 5,
+      //     name: "Sandwich",
+      //     price: 3.5,
+      //     image: "https://source.unsplash.com/160x100/?sandwich",
+      //   },
+      //   {
+      //     id: 6,
+      //     name: "Juice",
+      //     price: 2.8,
+      //     image: "https://source.unsplash.com/160x100/?juice",
+      //   },
+      // ];
+
+      // const productGrid = document.getElementById("product-grid");
+      // const cartList = document.getElementById("cart-list");
+      // const totalDisplay = document.getElementById("total");
+
+      // let cart = [];
+
+      // function renderProducts() {
+      //   productGrid.innerHTML = "";
+      //   products.forEach((product) => {
+      //     const card = document.createElement("div");
+      //     card.className = "product-card";
+      //     card.innerHTML = `
+      //   <img src="${product.image}" alt="${product.name}">
+      //   <h4>${product.name}</h4>
+      //   <p>$${product.price.toFixed(2)}</p>
+      //   <button onclick="addToCart(${product.id})">Add</button>
+      // `;
+      //     productGrid.appendChild(card);
+      //   });
+      // }
+
+      // function addToCart(id) {
+      //   const product = products.find((p) => p.id === id);
+      //   const existing = cart.find((item) => item.id === id);
+
+      //   if (existing) {
+      //     existing.qty++;
+      //   } else {
+      //     cart.push({ ...product, qty: 1 });
+      //   }
+
+      //   updateCart();
+      // }
+
+      // function updateCart() {
+      //   cartList.innerHTML = "";
+      //   let total = 0;
+      //   cart.forEach((item) => {
+      //     total += item.qty * item.price;
+      //     const li = document.createElement("li");
+      //     li.innerHTML = `${item.name} x${item.qty} <span>$${(
+      //       item.qty * item.price
+      //     ).toFixed(2)}</span>`;
+      //     cartList.appendChild(li);
+      //   });
+      //   totalDisplay.textContent = total.toFixed(2);
+      // }
+
+      // function checkout() {
+      //   alert("Checkout successful!");
+      //   cart = [];
+      //   updateCart();
+      // }
+
+      // renderProducts();
+    </script>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+    <script src="firebase/config.js"></script>
+
+    <script>
+      let products = [];
 
       const productGrid = document.getElementById("product-grid");
       const cartList = document.getElementById("cart-list");
@@ -145,18 +211,53 @@
       let cart = [];
 
       function renderProducts() {
-        productGrid.innerHTML = "";
-        products.forEach((product) => {
-          const card = document.createElement("div");
-          card.className = "product-card";
-          card.innerHTML = `
-        <img src="${product.image}" alt="${product.name}">
-        <h4>${product.name}</h4>
-        <p>$${product.price.toFixed(2)}</p>
-        <button onclick="addToCart(${product.id})">Add</button>
-      `;
-          productGrid.appendChild(card);
+        db.ref("products").on("value", (snapshot) => {
+          const data = snapshot.val();
+          // console.log(products);
+          productGrid.innerHTML = "";
+
+          for (let id in data) {
+            console.log(id);
+            const p = data[id];
+            products = [
+              ...products,
+              {
+                id: id,
+                name: p.name,
+                price: p.price,
+                image: p.image,
+              },
+            ];
+            console.log(products);
+            //     const card = document.createElement("div");
+            //     card.className = "product-card";
+            //     card.innerHTML = `
+            //   <img src="${p.image}" alt="${p.name}">
+            //   <h4>${p.name}</h4>
+            //   <p>$${p.price.toFixed(2)}</p>
+            //   <button onclick="addToCart(${id})">Add</button>
+            // `;
+            //     productGrid.appendChild(card);
+            productGrid.innerHTML += `<div class="product-card">
+        <img src="${p.image}" alt="" width=80>
+        <h4>${p.name}</h4>
+        <p>$${p.price}</p>
+        <button onclick="addToCart('${id}')">Add</button>
+      </div>`;
+          }
         });
+
+        //   products.forEach((product) => {
+        //     const card = document.createElement("div");
+        //     card.className = "product-card";
+        //     card.innerHTML = `
+        //   <img src="${product.image}" alt="${product.name}">
+        //   <h4>${product.name}</h4>
+        //   <p>$${product.price.toFixed(2)}</p>
+        //   <button onclick="addToCart(${product.id})">Add</button>
+        // `;
+        //     productGrid.appendChild(card);
+        //   });
       }
 
       function addToCart(id) {
