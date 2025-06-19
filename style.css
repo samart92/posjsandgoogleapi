@@ -222,7 +222,7 @@ body {
     min-height: 60px;
 }
 
-.btn-save {
+.btn-add {
     margin-top: 15px;
     padding: 10px 20px;
     background-color: #3b82f6;
@@ -235,7 +235,7 @@ body {
     margin-bottom: 10px;
 }
 
-.btn-save:hover {
+.btn-add:hover {
     background-color: #2563eb;
 }
 
