@@ -117,8 +117,10 @@
                 const userData = snapshot.val();
                 console.log(userData);
                 if (userData && userData.name) {
+                  // console.log(user.uid);
                   // Save name in localStorage or pass it to dashboard
                   localStorage.setItem("user", userData.name);
+                  localStorage.setItem("userid", user.uid);
                   window.location.href = "dashboard.html";
                 } else {
                   errorMsg.textContent = "Invalid username or password";
